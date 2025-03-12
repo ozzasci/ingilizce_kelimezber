@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Word Dictionary</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <Meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body {
+        beden {
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
             margin: 20px;
@@ -66,6 +66,22 @@
             font-size: 20px;
             margin-bottom: 10px;
         }
+        .level {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        .progress-bar-container {
+            width: 100%;
+            arka plan rengi: #ddd;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .progress-bar {
+            width: 0;
+            height: 20px;
+            background-color: #007BFF;
+            border-radius: 5px;
+        }
         .question {
             font-size: 18px;
             margin-bottom: 20px;
@@ -106,6 +122,10 @@
     </table>
     <div class="game-container">
         <div class="score">Score: <span id="score">0</span></div>
+        <div class="level">Level: <span id="level">1</span></div>
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
         <div class="question" id="question"></div>
         <input type="text" id="answerInput" class="answer-input" placeholder="Type your answer...">
         <button class="submit-btn" id="submitAnswer">Submit</button>
