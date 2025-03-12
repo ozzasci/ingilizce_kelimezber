@@ -48,6 +48,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    document.getElementById('categorySelect').addEventListener('change', function() {
+        loadNextQuestion();
+    });
+
     document.getElementById('submitAnswer').addEventListener('click', function() {
         var answerInput = document.getElementById('answerInput');
         var userAnswer = answerInput.value.trim().toLowerCase();
@@ -74,13 +78,42 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function loadNextQuestion() {
-        if (words.length > 0) {
-            currentQuestionIndex = Math.floor(Math.random() * words.length);
-            document.getElementById('question').textContent = 'What is the meaning of: ' + words[currentQuestionIndex].word + '?';
+        const category = document.getElementById('categorySelect').value;
+        let filteredWords = words;
+        if (category !== 'all') {
+            filteredWords = words.filter(word => word.category === category);
+        }
+        if (filteredWords.length > 0) {
+            currentQuestionIndex = Math.floor(Math.random() * filteredWords.length);
+            document.getElementById('question').textContent = 'What is the meaning of: ' + filteredWords[currentQuestionIndex].word + '?';
             resetTimer();
+            loadMultipleChoiceAnswers(filteredWords[currentQuestionIndex].meaning);
         } else {
             document.getElementById('question').textContent = 'No words available';
         }
+    }
+
+    function loadMultipleChoiceAnswers(correctAnswer) {
+        const choices = [correctAnswer];
+        while (choices.length < 4) {
+            const randomIndex = Math.floor(Math.random() * words.length);
+            const randomAnswer = words[randomIndex].meaning;
+            if (!choices.includes(randomAnswer)) {
+                choices.push(randomAnswer);
+            }
+        }
+        choices.sort(() => Math.random() - 0.5); // Karıştır
+        const multipleChoiceContainer = document.getElementById('multipleChoiceAnswers');
+        multipleChoiceContainer.innerHTML = '';
+        choices.forEach(choice => {
+            const choiceBtn = document.createElement('button');
+            choiceBtn.className = 'submit-btn';
+            choiceBtn.textContent = choice;
+            choiceBtn.addEventListener('click', function() {
+                document.getElementById('answerInput').value = choice;
+            });
+            multipleChoiceContainer.appendChild(choiceBtn);
+        });
     }
 
     function updateProgressBar() {
