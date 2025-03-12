@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "en": "Hello",
+    "tr": "Merhaba",
+    "category": "Başlangıç",
+    "example": "Hello, how are you?"
+  },
+  {
+    "id": 116,
+    "en": "Dog",
+    "tr": "Köpek",
+    "category": "Hayvanlar",
+    "example": "I have a black dog"
+  },
+  // ... Diğer 498 kelime
+]
