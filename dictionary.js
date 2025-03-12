@@ -41,20 +41,28 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('submitAnswer').addEventListener('click', function() {
         var answerInput = document.getElementById('answerInput');
         var userAnswer = answerInput.value.trim().toLowerCase();
-        var correctAnswer = words[currentQuestionIndex].meaning.toLowerCase();
-        if (userAnswer === correctAnswer) {
-            score++;
-            document.getElementById('score').textContent = score;
-            alert('Correct!');
+        if (words.length > 0) {
+            var correctAnswer = words[currentQuestionIndex].meaning.toLowerCase();
+            if (userAnswer === correctAnswer) {
+                score++;
+                document.getElementById('score').textContent = score;
+                alert('Correct!');
+            } else {
+                alert('Incorrect. The correct answer was: ' + words[currentQuestionIndex].meaning);
+            }
+            answerInput.value = '';
+            loadNextQuestion();
         } else {
-            alert('Incorrect. The correct answer was: ' + words[currentQuestionIndex].meaning);
+            alert('No words available to ask.');
         }
-        answerInput.value = '';
-        loadNextQuestion();
     });
 
     function loadNextQuestion() {
-        currentQuestionIndex = Math.floor(Math.random() * words.length);
-        document.getElementById('question').textContent = 'What is the meaning of: ' + words[currentQuestionIndex].word + '?';
+        if (words.length > 0) {
+            currentQuestionIndex = Math.floor(Math.random() * words.length);
+            document.getElementById('question').textContent = 'What is the meaning of: ' + words[currentQuestionIndex].word + '?';
+        } else {
+            document.getElementById('question').textContent = 'No words available';
+        }
     }
 });
