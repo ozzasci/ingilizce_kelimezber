@@ -154,6 +154,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function playAudio(word) {
+        // Google Translate TTS URL
         const audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(word)}&tl=en&client=tw-ob`;
         const audio = new Audio(audioUrl);
 
