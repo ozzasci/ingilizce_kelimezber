@@ -77,6 +77,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    document.getElementById('playAudio').addEventListener('click', function() {
+        playAudio(words[currentQuestionIndex].word);
+    });
+
     function loadNextQuestion() {
         const category = document.getElementById('categorySelect').value;
         let filteredWords = words;
@@ -143,6 +147,11 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             multipleChoiceContainer.appendChild(choiceBtn);
         });
+    }
+
+    function playAudio(word) {
+        const audio = new Audio(`https://api.dictionaryapi.dev/media/pronunciations/en/${word}-us.mp3`);
+        audio.play();
     }
 
     function updateProgressBar() {
