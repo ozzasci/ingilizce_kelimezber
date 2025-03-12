@@ -18,55 +18,18 @@
             color: #333;
             margin-bottom: 20px;
         }
-        table {
-            width: 90%;
-            max-width: 800px;
-            border-collapse: collapse;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-        }
-        th, td {
-            padding: 15px;
-            text-align: left;
-        }
-        th {
-            background-color: #007BFF;
-            color: white;
-        }
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-        tr:hover {
-            background-color: #ddd;
-        }
-        td {
-            border-bottom: 1px solid #ddd;
-        }
-        .search-container {
-            margin-bottom: 20px;
-            width: 90%;
-            max-width: 800px;
-        }
-        .search-input {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        .game-container {
+        .category-container, .game-container, .badge-container {
             width: 90%;
             max-width: 800px;
             text-align: center;
             margin-bottom: 20px;
         }
-        .score {
-            font-size: 20px;
-            margin-bottom: 10px;
+        .category-container select {
+            padding: 10px;
+            font-size: 16px;
+            width: 50%;
         }
-        .level {
+        .score, .level, .timer {
             font-size: 18px;
             margin-bottom: 10px;
         }
@@ -86,14 +49,11 @@
             font-size: 18px;
             margin-bottom: 20px;
         }
-        .answer-input {
+        .answer-input, .submit-btn {
             padding: 10px;
             font-size: 16px;
-            width: 50%;
         }
         .submit-btn {
-            padding: 10px 20px;
-            font-size: 16px;
             background-color: #007BFF;
             color: white;
             border: none;
@@ -102,14 +62,6 @@
         }
         .submit-btn:hover {
             background-color: #0056b3;
-        }
-        .timer {
-            font-size: 18px;
-            margin-bottom: 20px;
-        }
-        .badge-container {
-            margin-top: 20px;
-            text-align: center;
         }
         .badge {
             display: inline-block;
@@ -127,16 +79,15 @@
     <div class="search-container">
         <input type="text" id="searchInput" class="search-input" placeholder="Search for words...">
     </div>
-    <table id="wordTable">
-        <thead>
-            <tr>
-                <th>Word</th>
-                <th>Meaning</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
+    <div class="category-container">
+        <select id="categorySelect">
+            <option value="all">All Categories</option>
+            <option value="animals">Animals</option>
+            <option value="food">Food</option>
+            <option value="verbs">Verbs</option>
+            <!-- Diğer kategorileri buraya ekleyin -->
+        </select>
+    </div>
     <div class="game-container">
         <div class="score">Score: <span id="score">0</span></div>
         <div class="level">Level: <span id="level">1</span></div>
@@ -145,6 +96,7 @@
         </div>
         <div class="timer" id="timer">Time left: <span id="timeLeft">30</span> seconds</div>
         <div class="question" id="question"></div>
+        <div id="multipleChoiceAnswers"></div>
         <input type="text" id="answerInput" class="answer-input" placeholder="Type your answer...">
         <button class="submit-btn" id="submitAnswer">Submit</button>
     </div>
