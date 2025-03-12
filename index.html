@@ -56,6 +56,37 @@
             border: 1px solid #ddd;
             border-radius: 4px;
         }
+        .game-container {
+            width: 90%;
+            max-width: 800px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .score {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        .question {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        .answer-input {
+            padding: 10px;
+            font-size: 16px;
+            width: 50%;
+        }
+        .submit-btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -73,6 +104,12 @@
         <tbody>
         </tbody>
     </table>
+    <div class="game-container">
+        <div class="score">Score: <span id="score">0</span></div>
+        <div class="question" id="question"></div>
+        <input type="text" id="answerInput" class="answer-input" placeholder="Type your answer...">
+        <button class="submit-btn" id="submitAnswer">Submit</button>
+    </div>
     <script src="dictionary.js"></script>
 </body>
 </html>
