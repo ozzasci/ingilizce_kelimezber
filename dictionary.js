@@ -1,194 +1,120 @@
-document.addEventListener('DOMContentLoaded', function() {
-    let words = [];
-    let currentQuestionIndex = 0;
-    let score = 0;
-    let level = 1;
-    let questionsPerLevel = 10;
-    let timeLeft = 30; // Zaman sınırı (saniye)
-    let timerInterval;
-    const badges = {
-        10: 'First 10 Words!',
-        20: '20 Words Mastered!',
-        50: '50 Words Pro!',
-        100: '100 Words Champion!',
-    };
-
-    fetch('words.json')
-        .then(response => response.json())
-        .then(data => {
-            words = data;
-            var wordTable = document.getElementById('wordTable').getElementsByTagName('tbody')[0];
-            if (Array.isArray(words)) {
-                words.forEach(wordObj => {
-                    var row = wordTable.insertRow();
-                    var cell1 = row.insertCell(0);
-                    var cell2 = row.insertCell(1);
-                    cell1.textContent = wordObj.word;
-                    cell2.textContent = wordObj.meaning;
-                });
-                loadNextQuestion();
-            } else {
-                console.error('JSON data is not an array:', words);
-            }
-        })
-        .catch(error => console.error('Error loading JSON data:', error));
-
-    document.getElementById('searchInput').addEventListener('keyup', function() {
-        var searchValue = this.value.toLowerCase();
-        var rows = document.getElementById('wordTable').getElementsByTagName('tbody')[0].getElementsByTagName('tr');
-        for (var i = 0; i < rows.length; i++) {
-            var cells = rows[i].getElementsByTagName('td');
-            var word = cells[0].textContent.toLowerCase();
-            var meaning = cells[1].textContent.toLowerCase();
-            if (word.includes(searchValue) || meaning.includes(searchValue)) {
-                rows[i].style.display = '';
-            } else {
-                rows[i].style.display = 'none';
-            }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Word Dictionary</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 20px;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-    });
-
-    document.getElementById('categorySelect').addEventListener('change', function() {
-        loadNextQuestion();
-    });
-
-    document.getElementById('submitAnswer').addEventListener('click', function() {
-        var answerInput = document.getElementById('answerInput');
-        var userAnswer = answerInput.value.trim().toLowerCase();
-        if (words.length > 0) {
-            var correctAnswer = words[currentQuestionIndex].meaning.toLowerCase();
-            if (userAnswer === correctAnswer) {
-                score++;
-                document.getElementById('score').textContent = score;
-                if (score % questionsPerLevel === 0) {
-                    level++;
-                    document.getElementById('level').textContent = level;
-                }
-                updateProgressBar();
-                checkForBadges();
-                alert('Correct!');
-            } else {
-                alert('Incorrect. The correct answer was: ' + words[currentQuestionIndex].meaning);
-            }
-            answerInput.value = '';
-            loadNextQuestion();
-        } else {
-            alert('No words available to ask.');
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
         }
-    });
-
-    document.getElementById('playAudio').addEventListener('click', function() {
-        playAudio(words[currentQuestionIndex].word);
-    });
-
-    function loadNextQuestion() {
-        const category = document.getElementById('categorySelect').value;
-        let filteredWords = words;
-        if (category !== 'all') {
-            filteredWords = words.filter(word => word.category === category);
+        .category-container, .game-container, .badge-container {
+            width: 90%;
+            max-width: 800px;
+            text-align: center;
+            margin-bottom: 20px;
         }
-        if (filteredWords.length > 0) {
-            currentQuestionIndex = Math.floor(Math.random() * filteredWords.length);
-            const questionType = Math.random() < 0.5 ? 'multipleChoice' : 'definition';
-            if (questionType === 'multipleChoice') {
-                document.getElementById('question').textContent = 'What is the meaning of: ' + filteredWords[currentQuestionIndex].word + '?';
-                loadMultipleChoiceAnswers(filteredWords[currentQuestionIndex].meaning);
-            } else {
-                document.getElementById('question').textContent = 'Which word means: ' + filteredWords[currentQuestionIndex].meaning + '?';
-                loadMultipleChoiceWords(filteredWords[currentQuestionIndex].word);
-            }
-            resetTimer();
-        } else {
-            document.getElementById('question').textContent = 'No words available';
+        .category-container select {
+            padding: 10px;
+            font-size: 16px;
+            width: 50%;
         }
-    }
-
-    function loadMultipleChoiceAnswers(correctAnswer) {
-        const choices = [correctAnswer];
-        while (choices.length < 4) {
-            const randomIndex = Math.floor(Math.random() * words.length);
-            const randomAnswer = words[randomIndex].meaning;
-            if (!choices.includes(randomAnswer)) {
-                choices.push(randomAnswer);
-            }
+        .score, .level, .timer {
+            font-size: 18px;
+            margin-bottom: 10px;
         }
-        choices.sort(() => Math.random() - 0.5); // Karıştır
-        const multipleChoiceContainer = document.getElementById('multipleChoiceContainer');
-        multipleChoiceContainer.innerHTML = '';
-        choices.forEach(choice => {
-            const choiceBtn = document.createElement('button');
-            choiceBtn.className = 'submit-btn';
-            choiceBtn.textContent = choice;
-            choiceBtn.addEventListener('click', function() {
-                document.getElementById('answerInput').value = choice;
-            });
-            multipleChoiceContainer.appendChild(choiceBtn);
-        });
-    }
-
-    function loadMultipleChoiceWords(correctWord) {
-        const choices = [correctWord];
-        while (choices.length < 4) {
-            const randomIndex = Math.floor(Math.random() * words.length);
-            const randomWord = words[randomIndex].word;
-            if (!choices.includes(randomWord)) {
-                choices.push(randomWord);
-            }
+        .progress-bar-container {
+            width: 100%;
+            background-color: #ddd;
+            border-radius: 5px;
+            margin-bottom: 20px;
         }
-        choices.sort(() => Math.random() - 0.5); // Karıştır
-        const multipleChoiceContainer = document.getElementById('multipleChoiceContainer');
-        multipleChoiceContainer.innerHTML = '';
-        choices.forEach(choice => {
-            const choiceBtn = document.createElement('button');
-            choiceBtn.className = 'submit-btn';
-            choiceBtn.textContent = choice;
-            choiceBtn.addEventListener('click', function() {
-                document.getElementById('answerInput').value = choice;
-            });
-            multipleChoiceContainer.appendChild(choiceBtn);
-        });
-    }
-
-    function playAudio(word) {
-        const audio = new Audio(`https://api.dictionaryapi.dev/media/pronunciations/en/${word}-us.mp3`);
-        audio.play();
-    }
-
-    function updateProgressBar() {
-        var progress = (score % questionsPerLevel) / questionsPerLevel * 100;
-        document.getElementById('progressBar').style.width = progress + '%';
-    }
-    
-    function checkForBadges() {
-        if (badges[score]) {
-            addBadge(badges[score]);
+        .progress-bar {
+            width: 0;
+            height: 20px;
+            background-color: #007BFF;
+            border-radius: 5px;
         }
-    }
-
-    function addBadge(badgeText) {
-        const badgeContainer = document.getElementById('badgeContainer');
-        const badge = document.createElement('div');
-        badge.className = 'badge';
-        badge.textContent = badgeText;
-        badgeContainer.appendChild(badge);
-    }
-
-    function startTimer() {
-        timerInterval = setInterval(function() {
-            timeLeft--;
-            document.getElementById('timeLeft').textContent = timeLeft;
-            if (timeLeft <= 0) {
-                clearInterval(timerInterval);
-                alert('Time is up! The correct answer was: ' + words[currentQuestionIndex].meaning);
-                loadNextQuestion();
-            }
-        }, 1000);
-    }
-
-    function resetTimer() {
-        clearInterval(timerInterval);
-        timeLeft = 30; // Zaman sınırı (saniye)
-        document.getElementById('timeLeft').textContent = timeLeft;
-        startTimer();
-    }
-});
+        .question {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        .example-sentence {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: #555;
+        }
+        .answer-input, .submit-btn, .audio-btn {
+            padding: 10px;
+            font-size: 16px;
+        }
+        .submit-btn, .audio-btn {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .submit-btn:hover, .audio-btn:hover {
+            background-color: #0056b3;
+        }
+        .multiple-choice-container {
+            margin-bottom: 20px;
+        }
+        .badge {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #ffcc00;
+            border-radius: 10px;
+            margin: 5px;
+            font-size: 14px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Word Dictionary</h1>
+    <div class="search-container">
+        <input type="text" id="searchInput" class="search-input" placeholder="Search for words...">
+    </div>
+    <div class="category-container">
+        <select id="categorySelect">
+            <option value="all">All Categories</option>
+            <option value="animals">Animals</option>
+            <option value="food">Food</option>
+            <option value="verbs">Verbs</option>
+            <!-- Diğer kategorileri buraya ekleyin -->
+        </select>
+    </div>
+    <div class="game-container">
+        <div class="score">Score: <span id="score">0</span></div>
+        <div class="level">Level: <span id="level">1</span></div>
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="timer" id="timer">Time left: <span id="timeLeft">30</span> seconds</div>
+        <div class="question" id="question"></div>
+        <div class="example-sentence" id="exampleSentence"></div>
+        <div class="multiple-choice-container" id="multipleChoiceContainer">
+            <!-- Çoktan seçmeli şıklar buraya eklenecek -->
+        </div>
+        <input type="text" id="answerInput" class="answer-input" placeholder="Type your answer...">
+        <button class="submit-btn" id="submitAnswer">Submit</button>
+        <button class="audio-btn" id="playAudio">Play Audio</button>
+    </div>
+    <div class="badge-container" id="badgeContainer">
+        <!-- Rozetler buraya eklenecek -->
+    </div>
+    <script src="dictionary.js"></script>
+</body>
+</html>
