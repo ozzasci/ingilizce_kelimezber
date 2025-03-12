@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    fetch('words.json')  // JSON dosyanızın yolunu burada belirtin
+    fetch('word.json')  // JSON dosyanızın yolunu burada belirtin
         .then(response => response.json())
         .then(data => {
             var wordTable = document.getElementById('wordTable').getElementsByTagName('tbody')[0];
