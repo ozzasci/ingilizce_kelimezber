@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', function() {
     let score = 0;
     let level = 1;
     let questionsPerLevel = 10;
+    let timeLeft = 30; // Zaman sınırı (saniye)
+    let timerInterval;
     const badges = {
         10: 'First 10 Words!',
         20: '20 Words Mastered!',
@@ -75,6 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (words.length > 0) {
             currentQuestionIndex = Math.floor(Math.random() * words.length);
             document.getElementById('question').textContent = 'What is the meaning of: ' + words[currentQuestionIndex].word + '?';
+            resetTimer();
         } else {
             document.getElementById('question').textContent = 'No words available';
         }
@@ -97,5 +100,24 @@ document.addEventListener('DOMContentLoaded', function() {
         badge.className = 'badge';
         badge.textContent = badgeText;
         badgeContainer.appendChild(badge);
+    }
+
+    function startTimer() {
+        timerInterval = setInterval(function() {
+            timeLeft--;
+            document.getElementById('timeLeft').textContent = timeLeft;
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                alert('Time is up! The correct answer was: ' + words[currentQuestionIndex].meaning);
+                loadNextQuestion();
+            }
+        }, 1000);
+    }
+
+    function resetTimer() {
+        clearInterval(timerInterval);
+        timeLeft = 30; // Zaman sınırı (saniye)
+        document.getElementById('timeLeft').textContent = timeLeft;
+        startTimer();
     }
 });
