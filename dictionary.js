@@ -162,8 +162,21 @@ document.addEventListener('DOMContentLoaded', function() {
             const meaningElement = document.createElement('div');
             meaningElement.className = 'flashcard-meaning';
             meaningElement.textContent = wordObj.meaning;
+            meaningElement.style.display = 'none';
+
             flashcard.appendChild(wordElement);
             flashcard.appendChild(meaningElement);
+
+            flashcard.addEventListener('click', function() {
+                if (wordElement.style.display === 'none') {
+                    wordElement.style.display = 'block';
+                    meaningElement.style.display = 'none';
+                } else {
+                    wordElement.style.display = 'none';
+                    meaningElement.style.display = 'block';
+                }
+            });
+
             flashcardContainer.appendChild(flashcard);
         });
     }
