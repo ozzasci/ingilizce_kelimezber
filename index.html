@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Word Dictionary</title>
-    <Meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        beden {
+        body {
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
             margin: 20px;
@@ -72,7 +72,7 @@
         }
         .progress-bar-container {
             width: 100%;
-            arka plan rengi: #ddd;
+            background-color: #ddd;
             border-radius: 5px;
             margin-bottom: 20px;
         }
@@ -103,6 +103,19 @@
         .submit-btn:hover {
             background-color: #0056b3;
         }
+        .badge-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .badge {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #ffcc00;
+            border-radius: 10px;
+            margin: 5px;
+            font-size: 14px;
+            color: #333;
+        }
     </style>
 </head>
 <body>
@@ -129,6 +142,9 @@
         <div class="question" id="question"></div>
         <input type="text" id="answerInput" class="answer-input" placeholder="Type your answer...">
         <button class="submit-btn" id="submitAnswer">Submit</button>
+    </div>
+    <div class="badge-container" id="badgeContainer">
+        <!-- Rozetler buraya eklenecek -->
     </div>
     <script src="dictionary.js"></script>
 </body>
