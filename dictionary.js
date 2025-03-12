@@ -154,7 +154,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function playAudio(word) {
-        const audioUrl = `https://api.dictionaryapi.dev/media/pronunciations/en/${word}-us.mp3`;
+        const audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(word)}&tl=en&client=tw-ob`;
         const audio = new Audio(audioUrl);
 
         audio.onerror = function() {
