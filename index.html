@@ -63,6 +63,9 @@
         .submit-btn:hover {
             background-color: #0056b3;
         }
+        .multiple-choice-container {
+            margin-bottom: 20px;
+        }
         .badge {
             display: inline-block;
             padding: 10px 20px;
@@ -96,7 +99,9 @@
         </div>
         <div class="timer" id="timer">Time left: <span id="timeLeft">30</span> seconds</div>
         <div class="question" id="question"></div>
-        <div id="multipleChoiceAnswers"></div>
+        <div class="multiple-choice-container" id="multipleChoiceContainer">
+            <!-- Çoktan seçmeli şıklar buraya eklenecek -->
+        </div>
         <input type="text" id="answerInput" class="answer-input" placeholder="Type your answer...">
         <button class="submit-btn" id="submitAnswer">Submit</button>
     </div>
