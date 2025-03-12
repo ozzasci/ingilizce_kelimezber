@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', function() {
     let words = [];
     let currentQuestionIndex = 0;
     let score = 0;
+    let level = 1;
+    let questionsPerLevel = 10;
 
     fetch('words.json')
         .then(response => response.json())
@@ -46,6 +48,11 @@ document.addEventListener('DOMContentLoaded', function() {
             if (userAnswer === correctAnswer) {
                 score++;
                 document.getElementById('score').textContent = score;
+                if (score % questionsPerLevel === 0) {
+                    level++;
+                    document.getElementById('level').textContent = level;
+                }
+                updateProgressBar();
                 alert('Correct!');
             } else {
                 alert('Incorrect. The correct answer was: ' + words[currentQuestionIndex].meaning);
@@ -64,5 +71,10 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             document.getElementById('question').textContent = 'No words available';
         }
+    }
+
+    function updateProgressBar() {
+        var progress = (score % questionsPerLevel) / questionsPerLevel * 100;
+        document.getElementById('progressBar').style.width = progress + '%';
     }
 });
