@@ -154,8 +154,18 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function playAudio(word) {
-        const audio = new Audio(`https://api.dictionaryapi.dev/media/pronunciations/en/${word}-us.mp3`);
-        audio.play();
+        const audioUrl = `https://api.dictionaryapi.dev/media/pronunciations/en/${word}-us.mp3`;
+        const audio = new Audio(audioUrl);
+
+        audio.onerror = function() {
+            console.error('Failed to load audio for word:', word);
+            alert('Error: Unable to play audio for this word.');
+        };
+
+        audio.play().catch(error => {
+            console.error('Error playing audio:', error);
+            alert('Error: Unable to play audio. Please try again later.');
+        });
     }
 
     function updateProgressBar() {
