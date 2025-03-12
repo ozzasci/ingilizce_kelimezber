@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             var wordTable = document.getElementById('wordTable').getElementsByTagName('tbody')[0];
-            data.words.forEach(wordObj => {
+            data.forEach(wordObj => {
                 var row = wordTable.insertRow();
                 var cell1 = row.insertCell(0);
                 var cell2 = row.insertCell(1);
