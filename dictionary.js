@@ -78,7 +78,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     document.getElementById('showFlashcards').addEventListener('click', function() {
-        showFlashcards();
+        const flashcardContainer = document.getElementById('flashcardContainer');
+        flashcardContainer.classList.toggle('open');
     });
 
     function loadNextQuestion() {
@@ -156,27 +157,28 @@ document.addEventListener('DOMContentLoaded', function() {
         words.forEach(wordObj => {
             const flashcard = document.createElement('div');
             flashcard.className = 'flashcard';
+            const flashcardInner = document.createElement('div');
+            flashcardInner.className = 'flashcard-inner';
+            const flashcardFront = document.createElement('div');
+            flashcardFront.className = 'flashcard-front';
+            const flashcardBack = document.createElement('div');
+            flashcardBack.className = 'flashcard-back';
+
             const wordElement = document.createElement('div');
             wordElement.className = 'flashcard-word';
             wordElement.textContent = wordObj.word;
+
             const meaningElement = document.createElement('div');
             meaningElement.className = 'flashcard-meaning';
             meaningElement.textContent = wordObj.meaning;
-            meaningElement.style.display = 'none';
 
-            flashcard.appendChild(wordElement);
-            flashcard.appendChild(meaningElement);
+            flashcardFront.appendChild(wordElement);
+            flashcardBack.appendChild(meaningElement);
 
-            flashcard.addEventListener('click', function() {
-                if (wordElement.style.display === 'none') {
-                    wordElement.style.display = 'block';
-                    meaningElement.style.display = 'none';
-                } else {
-                    wordElement.style.display = 'none';
-                    meaningElement.style.display = 'block';
-                }
-            });
+            flashcardInner.appendChild(flashcardFront);
+            flashcardInner.appendChild(flashcardBack);
 
+            flashcard.appendChild(flashcardInner);
             flashcardContainer.appendChild(flashcard);
         });
     }
