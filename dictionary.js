@@ -218,4 +218,20 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('timeLeft').textContent = timeLeft;
         startTimer();
     }
+
+    // Sayfanın en üstüne gitme butonu işlevselliği
+    const topBtn = document.getElementById('topBtn');
+    const topBtnContainer = document.getElementById('topBtnContainer');
+
+    window.addEventListener('scroll', function() {
+        if (window.scrollY > 200) {
+            topBtnContainer.style.display = 'block';
+        } else {
+            topBtnContainer.style.display = 'none';
+        }
+    });
+
+    topBtn.addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
 });
