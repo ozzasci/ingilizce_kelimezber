@@ -75,6 +75,20 @@
             font-size: 14px;
             color: #333;
         }
+        .audio-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .audio-btn:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -104,6 +118,7 @@
         </div>
         <input type="text" id="answerInput" class="answer-input" placeholder="Type your answer...">
         <button class="submit-btn" id="submitAnswer">Submit</button>
+        <button class="audio-btn" id="playAudio">Play Audio</button>
     </div>
     <div class="badge-container" id="badgeContainer">
         <!-- Rozetler buraya eklenecek -->
