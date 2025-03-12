@@ -4,6 +4,12 @@ document.addEventListener('DOMContentLoaded', function() {
     let score = 0;
     let level = 1;
     let questionsPerLevel = 10;
+    const badges = {
+        10: 'First 10 Words!',
+        20: '20 Words Mastered!',
+        50: '50 Words Pro!',
+        100: '100 Words Champion!',
+    };
 
     fetch('words.json')
         .then(response => response.json())
@@ -53,6 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     document.getElementById('level').textContent = level;
                 }
                 updateProgressBar();
+                checkForBadges();
                 alert('Correct!');
             } else {
                 alert('Incorrect. The correct answer was: ' + words[currentQuestionIndex].meaning);
@@ -76,5 +83,19 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateProgressBar() {
         var progress = (score % questionsPerLevel) / questionsPerLevel * 100;
         document.getElementById('progressBar').style.width = progress + '%';
+    }
+    
+    function checkForBadges() {
+        if (badges[score]) {
+            addBadge(badges[score]);
+        }
+    }
+
+    function addBadge(badgeText) {
+        const badgeContainer = document.getElementById('badgeContainer');
+        const badge = document.createElement('div');
+        badge.className = 'badge';
+        badge.textContent = badgeText;
+        badgeContainer.appendChild(badge);
     }
 });
