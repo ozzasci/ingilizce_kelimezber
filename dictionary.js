@@ -77,10 +77,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    document.getElementById('playAudio').addEventListener('click', function() {
-        playAudio(words[currentQuestionIndex].word);
-    });
-
     function loadNextQuestion() {
         const category = document.getElementById('categorySelect').value;
         let filteredWords = words;
@@ -89,16 +85,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         if (filteredWords.length > 0) {
             currentQuestionIndex = Math.floor(Math.random() * filteredWords.length);
-            const questionType = Math.random() < 0.33 ? 'multipleChoice' : (Math.random() < 0.5 ? 'definition' : 'listening');
+            const questionType = Math.random() < 0.5 ? 'multipleChoice' : 'definition';
             if (questionType === 'multipleChoice') {
                 document.getElementById('question').textContent = 'What is the meaning of: ' + filteredWords[currentQuestionIndex].word + '?';
                 loadMultipleChoiceAnswers(filteredWords[currentQuestionIndex].meaning);
-            } else if (questionType === 'definition') {
+            } else {
                 document.getElementById('question').textContent = 'Which word means: ' + filteredWords[currentQuestionIndex].meaning + '?';
                 loadMultipleChoiceWords(filteredWords[currentQuestionIndex].word);
-            } else {
-                document.getElementById('question').textContent = 'Listen to the word and type it:';
-                playAudio(filteredWords[currentQuestionIndex].word);
             }
             document.getElementById('exampleSentence').textContent = 'Example: ' + filteredWords[currentQuestionIndex].example;
             resetTimer();
@@ -153,22 +146,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    function playAudio(word) {
-        // Google Translate TTS URL
-        const audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(word)}&tl=en&client=tw-ob`;
-        const audio = new Audio(audioUrl);
-
-        audio.onerror = function() {
-            console.error('Failed to load audio for word:', word);
-            alert('Error: Unable to play audio for this word.');
-        };
-
-        audio.play().catch(error => {
-            console.error('Error playing audio:', error);
-            alert('Error: Unable to play audio. Please try again later.');
-        });
-    }
-
     function updateProgressBar() {
         var progress = (score % questionsPerLevel) / questionsPerLevel * 100;
         document.getElementById('progressBar').style.width = progress + '%';
@@ -208,13 +185,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 Açıklamalar:
-Google Translate TTS API Kullanımı: playAudio fonksiyonu, Google Translate TTS API'sini kullanarak kelimenin sesli telaffuzunu çalar.
-Hata Kontrolü: Ses dosyası yüklenirken veya çalınırken hata oluşursa, kullanıcıya bilgilendirme mesajı gösterilir.
-Örnek Cümleler: Kelimenin kullanıldığı örnek cümleler gösterilir.
-Bu güncellemelerle dinleme özelliği düzgün çalışacaktır. Lütfen bu adımları uygulayıp tekrar deneyebilir misiniz? Başka bir konuda yardımcı olabilir miyim?
+Dinleme Testi Kaldırıldı: playAudio fonksiyonu ve dinleme testi ile ilgili kodlar kaldırıldı.
+Soru Tipleri: Sadece çoktan seçmeli ve tanımlama soruları kaldı.
+Örnek Cümleler: Kelimenin kullanıldığı örnek cümleler gösterilmeye devam ediyor.
+Bu güncellemelerle dinleme testi özelliği kaldırılmış olacaktır. Güncellenmiş kodu dictionary.js dosyasına ekleyebilirsiniz. Başka bir konuda yardımcı olabilir miyim?
 
-dinleme testi özelliğini kaldır
-Dinleme testi özelliğini kaldırmak için dictionary.js dosyasındaki ilgili kodları çıkarmamız gerekiyor. Aşağıda, dinleme testi özelliğini kaldırmak için gerekli güncellemeleri içeren bir örnek verilmiştir:
+playaudio fonksiyonunu kaldır
+Dinleme testi özelliğini kaldırmak için playAudio fonksiyonunu ve ilgili çağrıları dictionary.js dosyasından çıkarmamız gerekiyor. Aşağıda, playAudio fonksiyonunu ve dinleme testi ile ilgili kodları kaldırarak güncellenmiş dictionary.js dosyasını bulabilirsiniz:
 
 Güncellenmiş dictionary.js
 JavaScript
